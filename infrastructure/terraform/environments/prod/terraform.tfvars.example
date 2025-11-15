@@ -1,0 +1,35 @@
+# AWS Configuration
+aws_region = "us-east-1"
+project_name = "abode"
+environment = "prod"
+
+# VPC Configuration
+vpc_cidr = "10.1.0.0/16"
+availability_zones = ["us-east-1a", "us-east-1b", "us-east-1c"]
+private_subnet_cidrs = ["10.1.1.0/24", "10.1.2.0/24", "10.1.3.0/24"]
+public_subnet_cidrs = ["10.1.101.0/24", "10.1.102.0/24", "10.1.103.0/24"]
+
+# MWAA Configuration
+airflow_version = "2.8.1"
+environment_class = "mw1.medium"
+max_workers = 25
+min_workers = 2
+schedulers = 2
+webserver_access_mode = "PRIVATE_ONLY"
+
+# Airflow Configuration Options
+airflow_configuration_options = {
+  "core.default_timezone" = "utc"
+  "core.load_examples" = "False"
+  "webserver.expose_config" = "False"
+  "webserver.hide_paused_dags_by_default" = "True"
+}
+
+# Weekly Maintenance Window (UTC)
+weekly_maintenance_window_start = "SUN:03:00"
+
+# Tags
+tags = {
+  Team = "Data Engineering"
+  CostCenter = "Engineering"
+}

@@ -24,6 +24,9 @@ terraform.rc
 *.pem
 *.key
 *.crt
+.env
+.env.local
+*.credentials
 
 # IDE - JetBrains
 .idea/
