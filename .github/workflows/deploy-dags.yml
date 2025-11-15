@@ -44,6 +44,10 @@ jobs:
           ssh -i ~/.ssh/airflow-key.pem -o StrictHostKeyChecking=no ubuntu@${AIRFLOW_HOST} \
             'sudo rsync -a --delete /tmp/airflow-dags/ /opt/airflow/dags/ && sudo chown -R 50000:0 /opt/airflow/dags/'
 
+          # Trigger DAG parsing
+          ssh -i ~/.ssh/airflow-key.pem -o StrictHostKeyChecking=no ubuntu@${AIRFLOW_HOST} \
+            'sudo docker compose -f /opt/airflow/docker-compose.yaml exec -T scheduler airflow dags reserialize'
+
           echo "DAGs deployed successfully to ${AIRFLOW_HOST}"
 
       - name: Verify deployment
