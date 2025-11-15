@@ -1,6 +1,6 @@
 from datetime import datetime
 from airflow import DAG
-from airflow.operators.bash import BashOperator
+from airflow.providers.standard.operators.bash import BashOperator
 
 # This is a test DAG to verify GitHub Actions deployment
 
@@ -13,7 +13,7 @@ with DAG(
     'test_deployment',
     default_args=default_args,
     description='Test DAG for verifying deployment workflow',
-    schedule_interval='@daily',
+    schedule='@daily',
     catchup=False,
 ) as dag:
 
