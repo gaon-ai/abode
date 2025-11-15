@@ -63,7 +63,11 @@ resource "aws_instance" "airflow" {
     encrypted   = true
   }
 
-  user_data = templatefile("${path.module}/user-data.sh", {})
+  user_data = templatefile("${path.module}/user-data.sh", {
+    docker_compose = file("${path.module}/files/docker-compose.yaml")
+    airflow_service = file("${path.module}/files/airflow.service")
+    init_script = file("${path.module}/files/init-airflow.sh")
+  })
 
   tags = {
     Name        = "${var.project_name}-airflow-${var.environment}"
