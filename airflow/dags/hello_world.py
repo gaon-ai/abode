@@ -3,8 +3,8 @@ Hello World DAG - A simple example DAG for Apache Airflow
 """
 from datetime import datetime, timedelta
 from airflow import DAG
-from airflow.operators.bash import BashOperator
-from airflow.operators.python import PythonOperator
+from airflow.providers.standard.operators.bash import BashOperator
+from airflow.providers.standard.operators.python import PythonOperator
 
 # Default arguments for the DAG
 default_args = {
@@ -21,7 +21,7 @@ dag = DAG(
     'hello_world',
     default_args=default_args,
     description='A simple hello world DAG',
-    schedule_interval=timedelta(days=1),
+    schedule=timedelta(days=1),
     start_date=datetime(2024, 1, 1),
     catchup=False,
     tags=['example', 'hello_world'],

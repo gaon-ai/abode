@@ -21,18 +21,28 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.AIRFLOW_SSH_KEY }}
         run: |
           mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/airflow-key.pem
+          echo "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/airflow-key.pem || echo "$SSH_PRIVATE_KEY" > ~/.ssh/airflow-key.pem
           chmod 600 ~/.ssh/airflow-key.pem
           ssh-keyscan -H ${{ secrets.AIRFLOW_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Install rsync
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y rsync
 
       - name: Deploy DAGs
         env:
           AIRFLOW_HOST: ${{ secrets.AIRFLOW_HOST }}
         run: |
+          # Deploy to temp directory first
           rsync -avz --delete \
             -e "ssh -i ~/.ssh/airflow-key.pem -o StrictHostKeyChecking=no" \
             airflow/dags/ \
-            ubuntu@${AIRFLOW_HOST}:/opt/airflow/dags/
+            ubuntu@${AIRFLOW_HOST}:/tmp/airflow-dags/
+
+          # Move files with sudo
+          ssh -i ~/.ssh/airflow-key.pem -o StrictHostKeyChecking=no ubuntu@${AIRFLOW_HOST} \
+            'sudo rsync -a --delete /tmp/airflow-dags/ /opt/airflow/dags/ && sudo chown -R 50000:0 /opt/airflow/dags/'
 
           echo "DAGs deployed successfully to ${AIRFLOW_HOST}"
 

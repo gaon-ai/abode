@@ -81,3 +81,4 @@ airflow/config/*
 # Keep example files
 !terraform.tfvars.example
 !*.example
+__pycache__/

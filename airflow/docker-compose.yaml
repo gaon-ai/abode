@@ -12,7 +12,7 @@ x-airflow-common:
     AIRFLOW__WEBSERVER__EXPOSE_CONFIG: 'true'
     AIRFLOW__WEBSERVER__SECRET_KEY: 'changeme'
     AIRFLOW__CORE__AUTH_MANAGER: airflow.providers.fab.auth_manager.fab_auth_manager.FabAuthManager
-    _PIP_ADDITIONAL_REQUIREMENTS: apache-airflow-providers-fab
+    _PIP_ADDITIONAL_REQUIREMENTS: apache-airflow-providers-fab apache-airflow-providers-standard
   volumes:
     - ./dags:/opt/airflow/dags
     - ./logs:/opt/airflow/logs
@@ -55,6 +55,16 @@ services:
     command: scheduler
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:8974/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: always
+
+  airflow-dag-processor:
+    <<: *airflow-common
+    command: dag-processor
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8793/health"]
       interval: 30s
       timeout: 10s
       retries: 5
