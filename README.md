@@ -155,6 +155,14 @@ cd infrastructure/terraform/environments/dev
 terraform destroy
 ```
 
+## Troubleshooting
+
+See [infrastructure/README.md](infrastructure/README.md) for detailed troubleshooting guides covering:
+- Airflow 3.x migration issues
+- DAG deployment and execution problems
+- GitHub Actions setup
+- Manual operations and debugging
+
 ## Support
 
 - [Apache Airflow Docs](https://airflow.apache.org/docs/apache-airflow/3.1.3/)
