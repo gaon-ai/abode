@@ -132,12 +132,6 @@ variable "tags" {
   default     = {}
 }
 
-variable "kms_key_arn" {
-  description = "KMS key ARN for encryption (optional)"
-  type        = string
-  default     = null
-}
-
 variable "weekly_maintenance_window_start" {
   description = "Weekly maintenance window start (e.g., MON:03:00)"
   type        = string

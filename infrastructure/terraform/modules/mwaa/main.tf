@@ -5,7 +5,6 @@ resource "aws_mwaa_environment" "this" {
   environment_class     = var.environment_class
   execution_role_arn    = aws_iam_role.mwaa.arn
   webserver_access_mode = var.webserver_access_mode
-  kms_key               = var.kms_key_arn
 
   source_bucket_arn = aws_s3_bucket.mwaa.arn
   dag_s3_path       = var.dag_s3_path
