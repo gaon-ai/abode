@@ -1,5 +1,18 @@
-# Minimal MWAA Setup using default VPC
-
+# AWS Configuration
 aws_region = "us-east-1"
+
+# Project Settings
 project_name = "abode"
-environment = "dev"
+environment  = "dev"
+
+# REQUIRED: SSH key pair name (must exist in AWS)
+# Create one: aws ec2 create-key-pair --key-name airflow-key --query 'KeyMaterial' --output text > ~/.ssh/airflow-key.pem
+ssh_key_name = "your-key-name"
+
+# Instance Configuration (t4g.medium recommended for ARM cost savings)
+instance_type = "t4g.medium"
+volume_size   = 20
+
+# Security - Restrict to your IP for production
+# allowed_ssh_cidr = ["YOUR.IP.ADDRESS/32"]
+# allowed_web_cidr = ["YOUR.IP.ADDRESS/32"]

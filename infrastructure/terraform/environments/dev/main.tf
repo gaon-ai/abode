@@ -13,26 +13,16 @@ provider "aws" {
   region = var.aws_region
 }
 
-# Get default VPC
-data "aws_vpc" "default" {
-  default = true
-}
+module "airflow" {
+  source = "../../modules/airflow-ec2"
 
-# Get default subnets
-data "aws_subnets" "default" {
-  filter {
-    name   = "vpc-id"
-    values = [data.aws_vpc.default.id]
-  }
-}
+  project_name = var.project_name
+  environment  = var.environment
+  ssh_key_name = var.ssh_key_name
 
-# MWAA Module
-module "mwaa" {
-  source = "../../modules/mwaa"
+  instance_type = var.instance_type
+  volume_size   = var.volume_size
 
-  environment_name = "${var.project_name}-${var.environment}"
-  environment      = var.environment
-
-  vpc_id             = data.aws_vpc.default.id
-  private_subnet_ids = data.aws_subnets.default.ids
+  allowed_ssh_cidr = var.allowed_ssh_cidr
+  allowed_web_cidr = var.allowed_web_cidr
 }

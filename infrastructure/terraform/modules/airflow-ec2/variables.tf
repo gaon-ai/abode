@@ -1,23 +1,10 @@
-variable "aws_region" {
-  description = "AWS region"
-  type        = string
-  default     = "us-east-1"
-}
-
 variable "project_name" {
-  description = "Project name"
+  description = "Project name for resource naming"
   type        = string
-  default     = "abode"
 }
 
 variable "environment" {
-  description = "Environment"
-  type        = string
-  default     = "dev"
-}
-
-variable "ssh_key_name" {
-  description = "SSH key pair name (must exist in AWS)"
+  description = "Environment (dev, prod)"
   type        = string
 }
 
@@ -31,6 +18,11 @@ variable "volume_size" {
   description = "EBS volume size in GB"
   type        = number
   default     = 20
+}
+
+variable "ssh_key_name" {
+  description = "SSH key pair name for EC2 access"
+  type        = string
 }
 
 variable "allowed_ssh_cidr" {

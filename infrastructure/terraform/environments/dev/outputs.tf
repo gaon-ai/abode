@@ -1,29 +1,28 @@
-output "mwaa_environment_arn" {
-  description = "ARN of the MWAA environment"
-  value       = module.mwaa.mwaa_environment_arn
+output "instance_id" {
+  description = "EC2 instance ID"
+  value       = module.airflow.instance_id
 }
 
-output "mwaa_webserver_url" {
-  description = "Webserver URL of the MWAA environment"
-  value       = module.mwaa.mwaa_webserver_url
+output "instance_public_ip" {
+  description = "Public IP address"
+  value       = module.airflow.instance_public_ip
 }
 
-output "mwaa_execution_role_arn" {
-  description = "Execution role ARN for MWAA"
-  value       = module.mwaa.mwaa_execution_role_arn
+output "airflow_url" {
+  description = "Airflow web UI URL"
+  value       = module.airflow.airflow_url
 }
 
-output "s3_bucket_name" {
-  description = "Name of the S3 bucket for MWAA"
-  value       = module.mwaa.s3_bucket_name
+output "ssh_command" {
+  description = "SSH command"
+  value       = module.airflow.ssh_command
 }
 
-output "vpc_id" {
-  description = "VPC ID"
-  value       = module.vpc.vpc_id
-}
-
-output "private_subnet_ids" {
-  description = "Private subnet IDs"
-  value       = module.vpc.private_subnets
+output "default_credentials" {
+  description = "Default Airflow credentials"
+  value = {
+    username = "admin"
+    password = "admin"
+  }
+  sensitive = false
 }

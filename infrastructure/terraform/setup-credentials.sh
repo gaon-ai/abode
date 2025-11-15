@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # AWS Credentials Setup Script for Terraform
-# This script helps you set up local AWS credentials that won't be committed to git
 
 set -e
 

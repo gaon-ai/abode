@@ -70,6 +70,14 @@ Thumbs.db
 ehthumbs.db
 Desktop.ini
 
+# Airflow
+airflow/logs/*
+!airflow/logs/.gitkeep
+airflow/plugins/*
+!airflow/plugins/.gitkeep
+airflow/config/*
+!airflow/config/.gitkeep
+
 # Keep example files
 !terraform.tfvars.example
 !*.example
