@@ -1,26 +1,5 @@
 version: '3.8'
 
-x-airflow-common:
-  &airflow-common
-  image: apache/airflow:3.1.3
-  environment: &airflow-common-env
-    AIRFLOW__CORE__EXECUTOR: LocalExecutor
-    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
-    AIRFLOW__CORE__FERNET_KEY: ''
-    AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
-    AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
-    AIRFLOW__WEBSERVER__EXPOSE_CONFIG: 'true'
-    AIRFLOW__WEBSERVER__SECRET_KEY: 'changeme-in-production'
-  volumes:
-    - ./dags:/opt/airflow/dags
-    - ./logs:/opt/airflow/logs
-    - ./plugins:/opt/airflow/plugins
-    - ./config:/opt/airflow/config
-  user: "50000:0"
-  depends_on:
-    postgres:
-      condition: service_healthy
-
 services:
   postgres:
     image: postgres:14
@@ -29,34 +8,37 @@ services:
       POSTGRES_PASSWORD: airflow
       POSTGRES_DB: airflow
     volumes:
-      - postgres-db-volume:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD", "pg_isready", "-U", "airflow"]
-      interval: 5s
-      retries: 5
-    restart: always
+      - postgres-db:/var/lib/postgresql/data
 
-  airflow-webserver:
-    <<: *airflow-common
+  webserver:
+    image: apache/airflow:3.1.3
     command: webserver
     ports:
       - "8080:8080"
-    healthcheck:
-      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+    depends_on:
+      - postgres
     restart: always
 
-  airflow-scheduler:
-    <<: *airflow-common
+  scheduler:
+    image: apache/airflow:3.1.3
     command: scheduler
-    healthcheck:
-      test: ["CMD", "curl", "--fail", "http://localhost:8974/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+    depends_on:
+      - postgres
     restart: always
 
 volumes:
-  postgres-db-volume:
+  postgres-db:
