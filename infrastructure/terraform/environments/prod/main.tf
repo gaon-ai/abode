@@ -59,24 +59,11 @@ module "mwaa" {
   environment_name = "${var.project_name}-${var.environment}"
   environment      = var.environment
 
-  airflow_version   = var.airflow_version
-  environment_class = var.environment_class
-  max_workers       = var.max_workers
-  min_workers       = var.min_workers
-  schedulers        = var.schedulers
-
-  webserver_access_mode = var.webserver_access_mode
-
   vpc_id             = module.vpc.vpc_id
   private_subnet_ids = module.vpc.private_subnets
 
-  dag_s3_path          = var.dag_s3_path
-  requirements_s3_path = var.requirements_s3_path
-
-  airflow_configuration_options = var.airflow_configuration_options
-  logging_configuration         = var.logging_configuration
-
-  weekly_maintenance_window_start = var.weekly_maintenance_window_start
-
-  tags = var.tags
+  # Override defaults for production
+  environment_class = "mw1.medium"
+  max_workers       = 10
+  min_workers       = 2
 }
