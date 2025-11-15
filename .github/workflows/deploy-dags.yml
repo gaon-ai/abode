@@ -1,0 +1,44 @@
+name: Deploy DAGs to Airflow
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'airflow/dags/**'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.AIRFLOW_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/airflow-key.pem
+          chmod 600 ~/.ssh/airflow-key.pem
+          ssh-keyscan -H ${{ secrets.AIRFLOW_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy DAGs
+        env:
+          AIRFLOW_HOST: ${{ secrets.AIRFLOW_HOST }}
+        run: |
+          rsync -avz --delete \
+            -e "ssh -i ~/.ssh/airflow-key.pem -o StrictHostKeyChecking=no" \
+            airflow/dags/ \
+            ubuntu@${AIRFLOW_HOST}:/opt/airflow/dags/
+
+          echo "DAGs deployed successfully to ${AIRFLOW_HOST}"
+
+      - name: Verify deployment
+        env:
+          AIRFLOW_HOST: ${{ secrets.AIRFLOW_HOST }}
+        run: |
+          ssh -i ~/.ssh/airflow-key.pem -o StrictHostKeyChecking=no ubuntu@${AIRFLOW_HOST} \
+            'ls -la /opt/airflow/dags/'

@@ -1,0 +1,10 @@
+# Apache Airflow and dependencies
+apache-airflow==2.8.1
+
+# Airflow providers (add as needed)
+# apache-airflow-providers-amazon
+# apache-airflow-providers-google
+# apache-airflow-providers-postgres
+
+# Additional dependencies for your DAGs
+# Add your custom Python packages here

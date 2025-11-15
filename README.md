@@ -69,16 +69,33 @@ Password: admin
 
 ## Deploy DAGs
 
-### Via SCP
+### Via GitHub Actions (Automated)
+
+Push DAG changes to the main branch and they'll automatically deploy.
+
+**Setup:**
+
+1. Add GitHub secrets (Settings → Secrets → Actions):
+   - `AIRFLOW_SSH_KEY`: Contents of `~/.ssh/airflow-dev.pem`
+   - `AIRFLOW_HOST`: EC2 instance IP (from `terraform output`)
+
+2. Push DAG files to `airflow/dags/`:
+   ```bash
+   git add airflow/dags/my_dag.py
+   git commit -m "Add new DAG"
+   git push origin main
+   ```
+
+### Via SCP (Manual)
 
 ```bash
-scp -i ~/.ssh/airflow-key.pem my_dag.py ubuntu@<instance-ip>:/opt/airflow/dags/
+scp -i ~/.ssh/airflow-dev.pem my_dag.py ubuntu@<instance-ip>:/opt/airflow/dags/
 ```
 
-### Via SSH
+### Via SSH (Manual)
 
 ```bash
-ssh -i ~/.ssh/airflow-key.pem ubuntu@<instance-ip>
+ssh -i ~/.ssh/airflow-dev.pem ubuntu@<instance-ip>
 cd /opt/airflow/dags
 vim my_dag.py
 ```
