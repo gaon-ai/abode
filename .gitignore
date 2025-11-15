@@ -27,6 +27,7 @@ terraform.rc
 .env
 .env.local
 *.credentials
+.secrets
 
 # IDE - JetBrains
 .idea/
