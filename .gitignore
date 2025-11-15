@@ -25,13 +25,47 @@ terraform.rc
 *.key
 *.crt
 
-# IDE
-.vscode/
+# IDE - JetBrains
 .idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# IDE - VSCode
+.vscode/
+*.code-workspace
+
+# IDE - Vim
 *.swp
 *.swo
+*.swn
 *~
+
+# IDE - Emacs
+\#*\#
+.#*
+
+# IDE - Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# IDE - Eclipse
+.project
+.classpath
+.settings/
+.metadata/
+
+# macOS
 .DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
 
 # Keep example files
 !terraform.tfvars.example
