@@ -23,7 +23,7 @@ variable "environment_class" {
 variable "max_workers" {
   description = "Maximum number of workers"
   type        = number
-  default     = 10
+  default     = 1
 }
 
 variable "min_workers" {

@@ -46,12 +46,3 @@ resource "aws_s3_object" "dags_folder" {
 
   tags = var.tags
 }
-
-# Create placeholder requirements.txt
-resource "aws_s3_object" "requirements" {
-  bucket  = aws_s3_bucket.mwaa.id
-  key     = var.requirements_s3_path
-  content = "# Add your Python requirements here\n# Example:\n# apache-airflow-providers-amazon\n# pandas\n"
-
-  tags = var.tags
-}

@@ -9,8 +9,6 @@ resource "aws_mwaa_environment" "this" {
 
   source_bucket_arn = aws_s3_bucket.mwaa.arn
   dag_s3_path       = var.dag_s3_path
-  requirements_s3_path = var.requirements_s3_path
-  # plugins_s3_path   = var.plugins_s3_path # Uncomment when you upload plugins.zip
 
   airflow_configuration_options = var.airflow_configuration_options
 
@@ -61,7 +59,6 @@ resource "aws_mwaa_environment" "this" {
   )
 
   depends_on = [
-    aws_iam_role_policy.mwaa,
-    aws_s3_object.requirements
+    aws_iam_role_policy.mwaa
   ]
 }

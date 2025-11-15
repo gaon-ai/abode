@@ -55,7 +55,7 @@ variable "environment_class" {
 variable "max_workers" {
   description = "Maximum number of workers"
   type        = number
-  default     = 5
+  default     = 1
 }
 
 variable "min_workers" {
@@ -126,23 +126,23 @@ variable "logging_configuration" {
   default = {
     dag_processing_logs = {
       enabled   = true
-      log_level = "INFO"
+      log_level = "WARNING"
     }
     scheduler_logs = {
       enabled   = true
-      log_level = "INFO"
+      log_level = "WARNING"
     }
     task_logs = {
       enabled   = true
       log_level = "INFO"
     }
     webserver_logs = {
-      enabled   = true
-      log_level = "INFO"
+      enabled   = false
+      log_level = "WARNING"
     }
     worker_logs = {
-      enabled   = true
-      log_level = "INFO"
+      enabled   = false
+      log_level = "WARNING"
     }
   }
 }
