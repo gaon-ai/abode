@@ -1,0 +1,35 @@
+# Copy this file to terraform.tfvars and fill in the values
+# terraform.tfvars is gitignored to prevent committing secrets
+
+# AWS Configuration
+aws_region = "us-east-1"
+
+# Vendor Configuration
+vendor_aws_account_id = "123456789012"  # Replace with vendor's AWS account ID
+external_id           = "change-me-to-secure-random-string"  # Generate a secure random string
+
+# S3 Configuration
+bucket_name        = "abode-flinks"
+data_prefix        = "login-ids"
+test_prefix        = "test-login-ids"
+enable_test_prefix = false  # Disable test prefix in production
+
+# IAM Configuration
+role_max_session_duration = 3600  # 1 hour
+
+# Lifecycle Configuration
+enable_lifecycle_rules  = true
+glacier_transition_days = 90
+data_retention_days     = 2555  # 7 years
+
+# Logging
+enable_access_logging = false
+# access_log_bucket = "abode-logs"  # Uncomment if enabling logging
+
+# Tags
+tags = {
+  Team        = "Data Engineering"
+  Vendor      = "Flinks"
+  CostCenter  = "Engineering"
+  Compliance  = "PCI-DSS"
+}
