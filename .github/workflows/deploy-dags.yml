@@ -48,6 +48,18 @@ jobs:
           ssh -i ~/.ssh/airflow-key.pem -o StrictHostKeyChecking=no ubuntu@${AIRFLOW_HOST} \
             'sudo docker compose -f /opt/airflow/docker-compose.yaml exec -T scheduler airflow dags reserialize'
 
+          # Clean up deleted DAGs from database (DAGs that exist in DB but not in files)
+          ssh -i ~/.ssh/airflow-key.pem -o StrictHostKeyChecking=no ubuntu@${AIRFLOW_HOST} \
+            'sudo docker compose -f /opt/airflow/docker-compose.yaml exec -T scheduler bash -c "
+              cd /opt/airflow/dags &&
+              for dag_id in \$(airflow dags list --output table | tail -n +4 | awk \"{print \\\$1}\" | grep -v \"^===\"); do
+                if [ ! -f \${dag_id}.py ] && [ ! -f */\${dag_id}.py ]; then
+                  echo \"Deleting orphaned DAG: \$dag_id\"
+                  airflow dags delete \$dag_id -y || true
+                fi
+              done
+            "'
+
           echo "DAGs deployed successfully to ${AIRFLOW_HOST}"
 
       - name: Verify deployment
